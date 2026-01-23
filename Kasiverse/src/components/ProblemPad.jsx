@@ -28,7 +28,7 @@ function ProblemPad({ closeModal, addProblem }) {
       <div className="bg-white p-8 rounded-xl w-full max-w-md">
         {/* Modal title */}
         <h2 className="text-xl font-bold mb-6">
-          Add a New Problem
+          Add a Community Problem
         </h2>
 
         {/* Form wrapper */}
