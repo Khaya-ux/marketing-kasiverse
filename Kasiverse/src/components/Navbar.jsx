@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from "react-router-dom";
 
  function Navbar() {
   return (
@@ -13,7 +13,7 @@ import React from 'react';
 
         {/* Navlinks stay horizontal, centered, wrap if needed, no scroll */}
         <div className="flex flex-wrap  gap-x-4 md:gap-x-6 grow">
-          {/* Each navlink leads to a different section, and they have got hover effects, rounded corners too */}
+          {/* Each navlink leads to a different page */}
           <a 
             href="#home"
             className="text-white font-semibold no-underline transition-all duration-300 hover:bg-linear-to-l from-gray-800 via-blue-700 to-gray-900 px-3 py-1.5 rounded-lg"
@@ -21,13 +21,13 @@ import React from 'react';
             Problems
           </a>
           <a
-            href="#about"
+            href="#Ideas"
             className="text-white font-semibold no-underline transition-all duration-300 hover:bg-linear-to-l from-gray-800 via-blue-700 to-gray-900 px-3 py-1.5 rounded-lg"
           >
             Ideas
           </a>
           <a
-            href="#skills"
+            href="#Marketplace"
             className="text-white font-semibold no-underline transition-all duration-300 hover:bg-linear-to-l from-gray-800 via-blue-700 to-gray-900 hover:text-deep-pink px-3 py-1.5 rounded-lg"
           >
             Marketplace
