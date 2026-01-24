@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 // components
 import ProblemPanel from "../components/ProblemPanel";
 import ProblemPad from "../components/ProblemPad";
+import Navbar from "../components/Navbar.jsx";
 
 // Problems page component
 function Problems() {
@@ -58,7 +59,9 @@ function Problems() {
 
   return (
     // Page container
-    <div className="min-h-screen bg-linear-to-l from-gray-800 via-blue-700 to-gray-900 p-8">
+    <div>
+      <Navbar/>
+      <div className="min-h-screen bg-linear-to-l from-gray-800 via-blue-700 to-gray-900 px-8 pt-24 pb-8">
       {/* Page title */}
       <h1 className="text-3xl font-bold text-white mb-1">
         Community Problem Board
@@ -69,16 +72,16 @@ function Problems() {
       </p>
 
       {/* Top bar */}
-      <div className="flex items-center justify-between gap-4 bg-white/80 backdrop-blur-md px-6 py-4 rounded-md">
+      <div className="flex items-center justify-between gap-4 backdrop-blur-md">
         {/* Search input */}
-        <div className="flex items-center gap-2 w-full max-w-md">
+        <div className="flex items-center bg-white/80 gap-2 w-full px-12 py-3 rounded-md max-w-md">
           <Search size={18} />
           <input
             type="text"
             placeholder="Search problems..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full border px-3 py-2 rounded-md text-sm"
+            className="w-full  text-sm"
           />
         </div>
 
@@ -109,6 +112,7 @@ function Problems() {
           addProblem={addProblem}
         />
       )}
+    </div>
     </div>
   );
 }
