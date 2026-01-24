@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+.homepage {
+  background-image: url("./assets/universe.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.card1 {
+    background-image: url("./assets/community.png");
+    background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
