@@ -31,8 +31,8 @@ function Homepage() {
     },
 ];
   return (
-    <div className="homepage">
-       <div>
+    <div className="homepage ">
+       <div className="relative z-10">
         {/*Header */}
         <h1 className="text-6xl font-bold text-center pt-24 text-white">Kasiverse</h1>
         <div className="text-center text-white mt-4 mb-12 text-2xl font-semibold">
@@ -42,7 +42,7 @@ function Homepage() {
         <p className="text-center text-white mt-4">Join Kasiverse and help your community thrive! Post problems, share creative
         </p>
         <p className="text-center text-white mb-12">solutions, and find local services to create new opportunities for all</p>
-      </div>
+
       <div className="px-8 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 justify-items-center max-w-300 mx-auto">
         {cards.map((card, index) => (
@@ -94,7 +94,7 @@ function Homepage() {
         <button className="bg-linear-to-b from-green-500 via-emerald-500 to-teal-500 rounded-2xl px-6 py-2 hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] transition duration-300 ease-out hover:-translate-y-1">Get Started Now!</button>
         </Link>
         </div>
-        
+        </div>
     </div>
   )
 }
