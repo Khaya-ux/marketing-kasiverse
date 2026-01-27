@@ -1,10 +1,17 @@
 @import "tailwindcss";
 
 .homepage {
-  background-image: url("./assets/universe.png");
+  background-image: url("./assets/Soweto.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh;
 }
 
+.homepage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55); /* adjust darkness */
+  z-index: 0;
+}
