@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux'
 import StorePanel from "../components/StorePanel.jsx";
 import StorePad from "../components/StorePad.jsx";
 import CategoryFilter from "../components/CategoryFilter.jsx";
+import Navbar from "../components/Navbar.jsx";
+
 
 // Problems page component
 function Stores() {
@@ -47,6 +49,8 @@ function Stores() {
   return (
     // Page container
     <div>
+        <Navbar/>
+      
       <div className="min-h-screen bg-linear-to-l from-purple-800 via-black to-purple-900 px-8 pt-24 pb-8">
       {/* Page title */}
       <h1 className="text-3xl font-bold text-white mb-1">

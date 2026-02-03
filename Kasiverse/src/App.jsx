@@ -17,7 +17,7 @@ function App() {
         {/* Default route */}
         <Route path="/" element={<Homepage />} />
         <Route path="/register" element={<Signup />} />
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/problems" element={<Problems />} />
         <Route path="/stores" element={<Stores />} />
         <Route path="/contactform" element={<ContactForm />} />
@@ -25,6 +25,7 @@ function App() {
       </Routes>
     </BrowserRouter>
     </ContextProvider>
-
+ );
+}
 export default App;
 
