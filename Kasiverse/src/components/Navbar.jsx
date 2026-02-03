@@ -9,10 +9,12 @@ import { Link } from "react-router-dom";
       <div className="flex flex-wrap items-center justify-between px-6 py-4 gap-y-4">
         
         {/* Spacing between the logo and the navlinks */}
-        <div className="shrink-0 text-xl font-semibold pr-4">Kasiverse</div>
+        <Link to="/">
+        <div className="shrink-0 text-xl font-semibold pr-4">UbuntuHub</div>
+        </Link>
 
         {/* Navlinks stay horizontal, centered, wrap if needed, no scroll */}
-        <div className="flex flex-wrap  gap-x-4 md:gap-x-6 grow">
+        <div className="flex flex-wrap justify-center gap-6 grow overflow-x-auto whitespace-nowrap">
           {/* Each navlink leads to a different page */}
           <a 
             href="#home"
