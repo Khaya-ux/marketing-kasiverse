@@ -8,6 +8,7 @@ import Login from "./Login.jsx";
 import Problems from "./pages/Problems";
 import Homepage from "./components/Homepage";
 import Footer from "./components/Footer.jsx";
+import Ideas from "./pages/Ideas.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/problems" element={<Problems />} />
+        <Route path="/ideas" element={<Ideas />} />
         <Route path="/stores" element={<Stores />} />
         <Route path="/contactform" element={<ContactForm />} />
   
