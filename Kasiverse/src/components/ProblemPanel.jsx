@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { MapPin, Edit2, Trash2 } from "lucide-react";
 import { deleteNote, updateNote } from "../lib/api";
+import { useAuth } from "../context/ContextProvider";
 
 // ProblemPanel displays a single problem card with edit/delete functionality
 function ProblemPanel({ problem, onDelete, onUpdate }) {
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
+
+  // Check permissions (ONLY ADMINS can edit/delete)
+  const isAdmin = user?.user_metadata?.role?.toUpperCase() === 'ADMIN';
+  const canEdit = isAdmin;
+
   const [editData, setEditData] = useState({
     title: problem.title || "",
     description: problem.description || "",
@@ -144,24 +151,27 @@ function ProblemPanel({ problem, onDelete, onUpdate }) {
         <h3 className="text-lg font-semibold text-black flex-1">
           {problem.title}
         </h3>
-        <div className="flex gap-2">
-          <button
-            onClick={handleEdit}
-            disabled={isLoading}
-            className="p-1 text-blue-600 hover:bg-blue-100 rounded transition disabled:opacity-50"
-            title="Edit problem"
-          >
-            <Edit2 size={18} />
-          </button>
-          <button
-            onClick={handleDelete}
-            disabled={isLoading}
-            className="p-1 text-red-600 hover:bg-red-100 rounded transition disabled:opacity-50"
-            title="Delete problem"
-          >
-            <Trash2 size={18} />
-          </button>
-        </div>
+
+        {canEdit && (
+          <div className="flex gap-2">
+            <button
+              onClick={handleEdit}
+              disabled={isLoading}
+              className="p-1 text-blue-600 hover:bg-blue-100 rounded transition disabled:opacity-50"
+              title="Edit problem"
+            >
+              <Edit2 size={18} />
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={isLoading}
+              className="p-1 text-red-600 hover:bg-red-100 rounded transition disabled:opacity-50"
+              title="Delete problem"
+            >
+              <Trash2 size={18} />
+            </button>
+          </div>
+        )}
       </div>
 
       {error && (

@@ -21,7 +21,12 @@ app.post("/register", async (req, res) => {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { name } },
+    options: {
+      data: {
+        name,
+        role: "user", // Default role
+      },
+    },
   });
 
   if (error) {
@@ -68,6 +73,20 @@ const authMiddleware = async (req, res, next) => {
 };
 
 /**
+ * ADMIN MIDDLEWARE
+ * Checks if the authenticated user has the 'ADMIN' role.
+ */
+const adminMiddleware = async (req, res, next) => {
+  const role = req.user.user_metadata?.role || req.user.app_metadata?.role;
+  
+  if (role && role.toUpperCase() === 'ADMIN') {
+    next();
+  } else {
+    return res.status(403).json({ error: "Unauthorized: Admins only" });
+  }
+};
+
+/**
  * NOTES CRUD ENDPOINTS
  */
 
@@ -77,12 +96,18 @@ const authMiddleware = async (req, res, next) => {
 app.get("/notes", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
+    // const userRole = req.user.user_metadata?.role; // Not needed for GET anymore
 
-    const { data, error } = await supabase
+    // Return ALL notes for everyone
+    let query = supabase
       .from("notes")
       .select("*")
-      .eq("user_id", userId)
       .order("created_at", { ascending: false });
+
+    // No role check needed for reading - everyone sees everything
+    // if (userRole !== "admin") { ... }
+
+    const { data, error } = await query;
 
     if (error) {
       return res.status(400).json({ error: error.message });
@@ -136,14 +161,19 @@ app.post("/notes", authMiddleware, async (req, res) => {
 app.get("/notes/:id", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
+    // const userRole = req.user.user_metadata?.role;
     const noteId = req.params.id;
 
-    const { data, error } = await supabase
+    // Return ALL notes for everyone
+    let query = supabase
       .from("notes")
       .select("*")
-      .eq("id", noteId)
-      .eq("user_id", userId)
-      .single();
+      .eq("id", noteId);
+
+    // No role check needed
+    // if (userRole !== "admin") { ... }
+
+    const { data, error } = await query.single();
 
     if (error) {
       if (error.code === "PGRST116") {
@@ -160,21 +190,24 @@ app.get("/notes/:id", authMiddleware, async (req, res) => {
 });
 
 /**
- * PUT /notes/:id - Update a note
+ * PUT /notes/:id - Update a note (ADMIN ONLY)
  */
-app.put("/notes/:id", authMiddleware, async (req, res) => {
+app.put("/notes/:id", authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
+    // const userRole = req.user.user_metadata?.role; // Handled by middleware
     const noteId = req.params.id;
     const { title, description, location, price, category } = req.body;
 
-    // Verify note belongs to user
-    const { data: note, error: fetchError } = await supabase
+    // Verify note exists
+    let fetchQuery = supabase
       .from("notes")
       .select("id")
-      .eq("id", noteId)
-      .eq("user_id", userId)
-      .single();
+      .eq("id", noteId);
+    
+    // Strict Admin check handled by middleware
+
+    const { data: note, error: fetchError } = await fetchQuery.single();
 
     if (fetchError || !note) {
       return res.status(404).json({ error: "Note not found or unauthorized" });
@@ -190,7 +223,6 @@ app.put("/notes/:id", authMiddleware, async (req, res) => {
         category: category !== undefined ? category : undefined,
       })
       .eq("id", noteId)
-      .eq("user_id", userId)
       .select();
 
     if (error) {
@@ -205,20 +237,23 @@ app.put("/notes/:id", authMiddleware, async (req, res) => {
 });
 
 /**
- * DELETE /notes/:id - Delete a note
+ * DELETE /notes/:id - Delete a note (ADMIN ONLY)
  */
-app.delete("/notes/:id", authMiddleware, async (req, res) => {
+app.delete("/notes/:id", authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const userId = req.user.id;
+    // const userId = req.user.id; 
+    // const userRole = req.user.user_metadata?.role; // Handled by middleware
     const noteId = req.params.id;
 
-    // Verify note belongs to user
-    const { data: note, error: fetchError } = await supabase
+    // Verify note exists
+    let fetchQuery = supabase
       .from("notes")
       .select("id")
-      .eq("id", noteId)
-      .eq("user_id", userId)
-      .single();
+      .eq("id", noteId);
+
+    // Strict Admin check handled by middleware
+
+    const { data: note, error: fetchError } = await fetchQuery.single();
 
     if (fetchError || !note) {
       return res.status(404).json({ error: "Note not found or unauthorized" });
@@ -227,8 +262,7 @@ app.delete("/notes/:id", authMiddleware, async (req, res) => {
     const { error } = await supabase
       .from("notes")
       .delete()
-      .eq("id", noteId)
-      .eq("user_id", userId);
+      .eq("id", noteId);
 
     if (error) {
       return res.status(400).json({ error: error.message });

@@ -61,6 +61,20 @@ function Ideas() {
     setIdeas((prevIdeas) => [newIdea, ...prevIdeas]);
   };
 
+  // Function to delete an idea (Mock)
+  const deleteIdea = (id) => {
+    if (window.confirm("Are you sure you want to delete this idea?")) {
+      setIdeas((prevIdeas) => prevIdeas.filter((idea) => idea.id !== id));
+    }
+  };
+
+  // Function to update an idea (Mock)
+  const updateIdea = (id, updatedData) => {
+    setIdeas((prevIdeas) =>
+      prevIdeas.map((idea) => (idea.id === id ? { ...idea, ...updatedData } : idea))
+    );
+  };
+
   // Filter ideas based on search input
   const filteredIdeas = ideas.filter((idea) => {
     const query = searchTerm.toLowerCase();
@@ -74,63 +88,65 @@ function Ideas() {
   return (
     // Page container
     <div>
-      <Navbar/>
+      <Navbar />
       <div className="min-h-screen bg-linear-to-l from-purple-800 via-black to-purple-900 px-8 pt-24 pb-8">
-      {/* Page title */}
-      
-      <h1 className=" text-3xl font-bold text-white mb-1">
-        Solution Ideas & Opportunities
-      </h1>
-      {/* Subtitle */}
-      <p className="text-gray-300 mb-6">
-        Discover and share practical business ideas to build income and impact.
-      </p>
-      
+        {/* Page title */}
 
-      {/* Top bar */}
-      <div className="flex items-center justify-between gap-4 ">
-        {/* Search input */}
-        <div className="flex items-center bg-white/80 gap-2 w-full max-w-auto px-12 py-3 rounded-md">
-          <Search size={18} />
-          <input
-            type="text"
-            placeholder="Search ideas..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full  text-sm"
-          />
+        <h1 className=" text-3xl font-bold text-white mb-1">
+          Solution Ideas & Opportunities
+        </h1>
+        {/* Subtitle */}
+        <p className="text-gray-300 mb-6">
+          Discover and share practical business ideas to build income and impact.
+        </p>
+
+
+        {/* Top bar */}
+        <div className="flex items-center justify-between gap-4 ">
+          {/* Search input */}
+          <div className="flex items-center bg-white/80 gap-2 w-full max-w-auto px-12 py-3 rounded-md">
+            <Search size={18} />
+            <input
+              type="text"
+              placeholder="Search ideas..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full  text-sm"
+            />
+          </div>
+
+          {/* Add idea button */}
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-linear-to-l from-purple-800 via-black to-purple-900 text-white w-40 px-4 py-3  rounded-md transition duration-300 ease-out"
+          >
+            + Add Idea
+          </button>
+
         </div>
 
-        {/* Add idea button */}
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-linear-to-l from-purple-800 via-black to-purple-900 text-white w-40 px-4 py-3  rounded-md transition duration-300 ease-out"
-        >
-          + Add Idea
-        </button>
 
-      </div>
-    
+        {/* Ideas grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 p-3 mt-8 max-w-8xl mx-auto">
+          {filteredIdeas.map((idea) => (
+            <IdeaPanel
+              key={idea.id}
+              idea={idea}
+              onDelete={deleteIdea}
+              onUpdate={updateIdea}
+            />
+          ))}
+        </div>
 
-      {/* Ideas grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 p-3 mt-8 max-w-8xl mx-auto">
-        {filteredIdeas.map((idea) => (
-          <IdeaPanel
-            key={idea.id}
-            idea={idea}
+        {/* Modal */}
+        {isModalOpen && (
+          <IdeaPad
+            closeModal={() => setIsModalOpen(false)}
+            addIdea={addIdea}
           />
-        ))}
+        )}
       </div>
 
-      {/* Modal */}
-      {isModalOpen && (
-        <IdeaPad
-          closeModal={() => setIsModalOpen(false)}
-          addIdea={addIdea}
-        />
-      )}
-    </div>
- 
     </div>
   );
 }

@@ -5,9 +5,17 @@ import { Link } from "react-router-dom"
 import { MapPin, Edit2, Trash2 } from "lucide-react";
 import { deleteNote, updateNote } from "../lib/api";
 
+import { useAuth } from "../context/ContextProvider";
+
 // StorePanel displays a single store card with edit/delete functionality
 function StorePanel({ store, onDelete, onUpdate }) {
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
+
+  // Check if user is admin (ONLY ADMINS can edit/delete)
+  const isAdmin = user?.user_metadata?.role?.toUpperCase() === 'ADMIN';
+  const canEdit = isAdmin;
+
   const [editData, setEditData] = useState({
     title: store.title || "",
     description: store.description || "",
@@ -181,26 +189,29 @@ function StorePanel({ store, onDelete, onUpdate }) {
       {/* Store title */}
       <div className="flex items-center justify-between gap-2">
         <h3 className="flex items-center text-lg font-semibold text-black flex-1">
-        {store.title} 
-      </h3>
-      <div className="flex gap-2">
-        <button
-          onClick={handleEdit}
-          disabled={isLoading}
-          className="p-1 text-blue-600 hover:bg-blue-100 rounded transition disabled:opacity-50"
-          title="Edit store"
-        >
-          <Edit2 size={18} />
-        </button>
-        <button
-          onClick={handleDelete}
-          disabled={isLoading}
-          className="p-1 text-red-600 hover:bg-red-100 rounded transition disabled:opacity-50"
-          title="Delete store"
-        >
-          <Trash2 size={18} />
-        </button>
-      </div>
+          {store.title}
+        </h3>
+
+        {canEdit && (
+          <div className="flex gap-2">
+            <button
+              onClick={handleEdit}
+              disabled={isLoading}
+              className="p-1 text-blue-600 hover:bg-blue-100 rounded transition disabled:opacity-50"
+              title="Edit store"
+            >
+              <Edit2 size={18} />
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={isLoading}
+              className="p-1 text-red-600 hover:bg-red-100 rounded transition disabled:opacity-50"
+              title="Delete store"
+            >
+              <Trash2 size={18} />
+            </button>
+          </div>
+        )}
       </div>
 
       {error && (
@@ -210,7 +221,7 @@ function StorePanel({ store, onDelete, onUpdate }) {
       )}
 
       <p className="text-sm text-black rounded-lg px-2 bg-red-600 w-fit">{store.category}</p>
-      
+
       {/* Full store description */}
       <p className="text-sm text-black whitespace-pre-wrap">
         {store.description}
@@ -226,7 +237,7 @@ function StorePanel({ store, onDelete, onUpdate }) {
 
       <Link to="/contactform" className="mt-2 text-sm text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition duration-300 ease-out">
         Contact Business
-        </Link>
+      </Link>
 
     </div>
   );

@@ -16,7 +16,12 @@ function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`${API_URL}/register`, { name, email, password })
+      .post(`${API_URL}/register`, {
+        name,
+        email,
+        password,
+        role: "user" // Default role
+      })
       .then((res) => {
         console.log(res);
         navigate("/login");
@@ -80,11 +85,11 @@ function Signup() {
         <p className="text-center mt-4">Already have an account?</p>
 
         <Link
-            to="/login"
-            className="block text-center mt-2 border border-gray-300 bg-gray-100 py-2
+          to="/login"
+          className="block text-center mt-2 border border-gray-300 bg-gray-100 py-2
              text-gray-800 no-underline hover:bg-gray-200 hover:text-black transition"
-            >
-            Login
+        >
+          Login
         </Link>
       </div>
     </div>
