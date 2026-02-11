@@ -89,7 +89,7 @@ function Problems() {
     // Page container
     <div>
       <Navbar />
-      <div className="min-h-screen bg-blackk px-8 pt-24 pb-8">
+      <div className="min-h-screen bg-black px-8 pt-24 pb-8">
         {/* Page title */}
 
         <h1 className=" text-3xl font-bold text-white mb-1">
