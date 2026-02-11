@@ -104,7 +104,7 @@ function Stores() {
     <div>
       <Navbar />
 
-      <div className="min-h-screen bg-linear-to-l from-purple-800 via-black to-purple-900 px-8 pt-24 pb-8">
+      <div className="min-h-screen bg-black px-8 pt-24 pb-8">
         {/* Page title */}
         <h1 className="text-3xl font-bold text-white mb-1">
           Kasi Marketplace
